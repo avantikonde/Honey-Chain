@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables, TablesInsert } from "@/integrations/supabase/types";
 import { anchorProof, canonicalJson } from "./honey";
@@ -16,6 +17,11 @@ const unwrap = <T>(res: { data: T | null; error: { message: string } | null }): 
   if (res.error) throw new Error(res.error.message);
   return res.data as NonNullable<T>;
 };
+
+function unwrapRow<T>(res: PostgrestSingleResponse<T>): T {
+  if (res.error) throw new Error(res.error.message);
+  return res.data;
+}
 
 const unwrapMaybe = <T>(res: { data: T | null; error: { message: string } | null }): T | null => {
   if (res.error) throw new Error(res.error.message);
@@ -189,7 +195,7 @@ export const useCreateBatch = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (payload: TablesInsert<"honey_batches">) => {
-      const batch = unwrap(await supabase.from("honey_batches").insert(payload).select().single());
+      const batch = unwrapRow(await supabase.from("honey_batches").insert(payload).select().single());
       await recordEvent({
         batch,
         event_type: "harvest",
@@ -216,7 +222,7 @@ export async function recordEvent(input: {
   occurred_at?: string;
 }) {
   const occurred_at = input.occurred_at ?? new Date().toISOString();
-  const event = unwrap(
+  const event = unwrapRow(
     await supabase
       .from("traceability_events")
       .insert({
@@ -302,7 +308,7 @@ export async function verifyBatchIntegrity(batchId: string) {
     await supabase.from("traceability_events").select("*").eq("batch_id", batchId).order("occurred_at"),
   );
   const records = unwrap(await supabase.from("blockchain_records").select("*").eq("batch_id", batchId));
-  const batch = unwrap(await supabase.from("honey_batches").select("*").eq("id", batchId).single());
+  const batch = unwrapRow(await supabase.from("honey_batches").select("*").eq("id", batchId).single());
 
   let matched = 0;
   for (const rec of records) {
