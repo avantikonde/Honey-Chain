@@ -10,33 +10,185 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as VerifyIndexRouteImport } from './routes/verify.index'
+import { Route as VerifyBatchIdRouteImport } from './routes/verify.$batchId'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardAnalyticsRouteImport } from './routes/_authenticated/dashboard.analytics'
+import { Route as AuthenticatedDashboardSupplyChainRouteImport } from './routes/_authenticated/dashboard.supply-chain'
+import { Route as AuthenticatedDashboardBatchesIndexRouteImport } from './routes/_authenticated/dashboard.batches.index'
+import { Route as AuthenticatedDashboardBatchesBatchIdRouteImport } from './routes/_authenticated/dashboard.batches.$batchId'
+import { Route as AuthenticatedDashboardHivesIndexRouteImport } from './routes/_authenticated/dashboard.hives.index'
+import { Route as AuthenticatedDashboardHivesHiveIdRouteImport } from './routes/_authenticated/dashboard.hives.$hiveId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const VerifyIndexRoute = VerifyIndexRouteImport.update({
+  id: '/verify/',
+  path: '/verify/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyBatchIdRoute = VerifyBatchIdRouteImport.update({
+  id: '/verify/$batchId',
+  path: '/verify/$batchId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAnalyticsRoute =
+  AuthenticatedDashboardAnalyticsRouteImport.update({
+    id: '/analytics',
+    path: '/analytics',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSupplyChainRoute =
+  AuthenticatedDashboardSupplyChainRouteImport.update({
+    id: '/supply-chain',
+    path: '/supply-chain',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBatchesIndexRoute =
+  AuthenticatedDashboardBatchesIndexRouteImport.update({
+    id: '/batches/',
+    path: '/batches/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBatchesBatchIdRoute =
+  AuthenticatedDashboardBatchesBatchIdRouteImport.update({
+    id: '/batches/$batchId',
+    path: '/batches/$batchId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardHivesIndexRoute =
+  AuthenticatedDashboardHivesIndexRouteImport.update({
+    id: '/hives/',
+    path: '/hives/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardHivesHiveIdRoute =
+  AuthenticatedDashboardHivesHiveIdRouteImport.update({
+    id: '/hives/$hiveId',
+    path: '/hives/$hiveId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/verify/$batchId': typeof VerifyBatchIdRoute
+  '/verify/': typeof VerifyIndexRoute
+  '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
+  '/dashboard/supply-chain': typeof AuthenticatedDashboardSupplyChainRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/batches/$batchId': typeof AuthenticatedDashboardBatchesBatchIdRoute
+  '/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/dashboard/batches/': typeof AuthenticatedDashboardBatchesIndexRoute
+  '/dashboard/hives/': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/verify/$batchId': typeof VerifyBatchIdRoute
+  '/verify': typeof VerifyIndexRoute
+  '/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
+  '/dashboard/supply-chain': typeof AuthenticatedDashboardSupplyChainRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/batches/$batchId': typeof AuthenticatedDashboardBatchesBatchIdRoute
+  '/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/dashboard/batches': typeof AuthenticatedDashboardBatchesIndexRoute
+  '/dashboard/hives': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/verify/$batchId': typeof VerifyBatchIdRoute
+  '/verify/': typeof VerifyIndexRoute
+  '/_authenticated/dashboard/analytics': typeof AuthenticatedDashboardAnalyticsRoute
+  '/_authenticated/dashboard/supply-chain': typeof AuthenticatedDashboardSupplyChainRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/dashboard/batches/$batchId': typeof AuthenticatedDashboardBatchesBatchIdRoute
+  '/_authenticated/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/_authenticated/dashboard/batches/': typeof AuthenticatedDashboardBatchesIndexRoute
+  '/_authenticated/dashboard/hives/': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/verify/$batchId'
+    | '/verify/'
+    | '/dashboard/analytics'
+    | '/dashboard/supply-chain'
+    | '/dashboard/'
+    | '/dashboard/batches/$batchId'
+    | '/dashboard/hives/$hiveId'
+    | '/dashboard/batches/'
+    | '/dashboard/hives/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/verify/$batchId'
+    | '/verify'
+    | '/dashboard/analytics'
+    | '/dashboard/supply-chain'
+    | '/dashboard'
+    | '/dashboard/batches/$batchId'
+    | '/dashboard/hives/$hiveId'
+    | '/dashboard/batches'
+    | '/dashboard/hives'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/dashboard'
+    | '/verify/$batchId'
+    | '/verify/'
+    | '/_authenticated/dashboard/analytics'
+    | '/_authenticated/dashboard/supply-chain'
+    | '/_authenticated/dashboard/'
+    | '/_authenticated/dashboard/batches/$batchId'
+    | '/_authenticated/dashboard/hives/$hiveId'
+    | '/_authenticated/dashboard/batches/'
+    | '/_authenticated/dashboard/hives/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  VerifyBatchIdRoute: typeof VerifyBatchIdRoute
+  VerifyIndexRoute: typeof VerifyIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +200,141 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/verify/': {
+      id: '/verify/'
+      path: '/verify'
+      fullPath: '/verify/'
+      preLoaderRoute: typeof VerifyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify/$batchId': {
+      id: '/verify/$batchId'
+      path: '/verify/$batchId'
+      fullPath: '/verify/$batchId'
+      preLoaderRoute: typeof VerifyBatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/analytics': {
+      id: '/_authenticated/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof AuthenticatedDashboardAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/supply-chain': {
+      id: '/_authenticated/dashboard/supply-chain'
+      path: '/supply-chain'
+      fullPath: '/dashboard/supply-chain'
+      preLoaderRoute: typeof AuthenticatedDashboardSupplyChainRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/batches/': {
+      id: '/_authenticated/dashboard/batches/'
+      path: '/batches'
+      fullPath: '/dashboard/batches/'
+      preLoaderRoute: typeof AuthenticatedDashboardBatchesIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/batches/$batchId': {
+      id: '/_authenticated/dashboard/batches/$batchId'
+      path: '/batches/$batchId'
+      fullPath: '/dashboard/batches/$batchId'
+      preLoaderRoute: typeof AuthenticatedDashboardBatchesBatchIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/hives/': {
+      id: '/_authenticated/dashboard/hives/'
+      path: '/hives'
+      fullPath: '/dashboard/hives/'
+      preLoaderRoute: typeof AuthenticatedDashboardHivesIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/hives/$hiveId': {
+      id: '/_authenticated/dashboard/hives/$hiveId'
+      path: '/hives/$hiveId'
+      fullPath: '/dashboard/hives/$hiveId'
+      preLoaderRoute: typeof AuthenticatedDashboardHivesHiveIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardAnalyticsRoute: typeof AuthenticatedDashboardAnalyticsRoute
+  AuthenticatedDashboardSupplyChainRoute: typeof AuthenticatedDashboardSupplyChainRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardBatchesBatchIdRoute: typeof AuthenticatedDashboardBatchesBatchIdRoute
+  AuthenticatedDashboardHivesHiveIdRoute: typeof AuthenticatedDashboardHivesHiveIdRoute
+  AuthenticatedDashboardBatchesIndexRoute: typeof AuthenticatedDashboardBatchesIndexRoute
+  AuthenticatedDashboardHivesIndexRoute: typeof AuthenticatedDashboardHivesIndexRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardAnalyticsRoute: AuthenticatedDashboardAnalyticsRoute,
+    AuthenticatedDashboardSupplyChainRoute:
+      AuthenticatedDashboardSupplyChainRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardBatchesBatchIdRoute:
+      AuthenticatedDashboardBatchesBatchIdRoute,
+    AuthenticatedDashboardHivesHiveIdRoute:
+      AuthenticatedDashboardHivesHiveIdRoute,
+    AuthenticatedDashboardBatchesIndexRoute:
+      AuthenticatedDashboardBatchesIndexRoute,
+    AuthenticatedDashboardHivesIndexRoute:
+      AuthenticatedDashboardHivesIndexRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  VerifyBatchIdRoute: VerifyBatchIdRoute,
+  VerifyIndexRoute: VerifyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
