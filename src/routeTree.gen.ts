@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardBatchesIndexRouteImport } from './routes/_authenticated/dashboard.batches.index'
+import { Route as AuthenticatedDashboardBatchesBatchIdRouteImport } from './routes/_authenticated/dashboard.batches.$batchId'
 import { Route as AuthenticatedDashboardHivesIndexRouteImport } from './routes/_authenticated/dashboard.hives.index'
 import { Route as AuthenticatedDashboardHivesHiveIdRouteImport } from './routes/_authenticated/dashboard.hives.$hiveId'
 
@@ -42,6 +44,18 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardBatchesIndexRoute =
+  AuthenticatedDashboardBatchesIndexRouteImport.update({
+    id: '/batches/',
+    path: '/batches/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBatchesBatchIdRoute =
+  AuthenticatedDashboardBatchesBatchIdRouteImport.update({
+    id: '/batches/$batchId',
+    path: '/batches/$batchId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardHivesIndexRoute =
   AuthenticatedDashboardHivesIndexRouteImport.update({
     id: '/hives/',
@@ -60,14 +74,18 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/batches/$batchId': typeof AuthenticatedDashboardBatchesBatchIdRoute
   '/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/dashboard/batches/': typeof AuthenticatedDashboardBatchesIndexRoute
   '/dashboard/hives/': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/batches/$batchId': typeof AuthenticatedDashboardBatchesBatchIdRoute
   '/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/dashboard/batches': typeof AuthenticatedDashboardBatchesIndexRoute
   '/dashboard/hives': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRoutesById {
@@ -77,7 +95,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/dashboard/batches/$batchId': typeof AuthenticatedDashboardBatchesBatchIdRoute
   '/_authenticated/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/_authenticated/dashboard/batches/': typeof AuthenticatedDashboardBatchesIndexRoute
   '/_authenticated/dashboard/hives/': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRouteTypes {
@@ -87,14 +107,18 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/dashboard/'
+    | '/dashboard/batches/$batchId'
     | '/dashboard/hives/$hiveId'
+    | '/dashboard/batches/'
     | '/dashboard/hives/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/dashboard/batches/$batchId'
     | '/dashboard/hives/$hiveId'
+    | '/dashboard/batches'
     | '/dashboard/hives'
   id:
     | '__root__'
@@ -103,7 +127,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/dashboard/batches/$batchId'
     | '/_authenticated/dashboard/hives/$hiveId'
+    | '/_authenticated/dashboard/batches/'
     | '/_authenticated/dashboard/hives/'
   fileRoutesById: FileRoutesById
 }
@@ -150,6 +176,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/batches/': {
+      id: '/_authenticated/dashboard/batches/'
+      path: '/batches'
+      fullPath: '/dashboard/batches/'
+      preLoaderRoute: typeof AuthenticatedDashboardBatchesIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/batches/$batchId': {
+      id: '/_authenticated/dashboard/batches/$batchId'
+      path: '/batches/$batchId'
+      fullPath: '/dashboard/batches/$batchId'
+      preLoaderRoute: typeof AuthenticatedDashboardBatchesBatchIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/hives/': {
       id: '/_authenticated/dashboard/hives/'
       path: '/hives'
@@ -169,15 +209,21 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardBatchesBatchIdRoute: typeof AuthenticatedDashboardBatchesBatchIdRoute
   AuthenticatedDashboardHivesHiveIdRoute: typeof AuthenticatedDashboardHivesHiveIdRoute
+  AuthenticatedDashboardBatchesIndexRoute: typeof AuthenticatedDashboardBatchesIndexRoute
   AuthenticatedDashboardHivesIndexRoute: typeof AuthenticatedDashboardHivesIndexRoute
 }
 
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardBatchesBatchIdRoute:
+      AuthenticatedDashboardBatchesBatchIdRoute,
     AuthenticatedDashboardHivesHiveIdRoute:
       AuthenticatedDashboardHivesHiveIdRoute,
+    AuthenticatedDashboardBatchesIndexRoute:
+      AuthenticatedDashboardBatchesIndexRoute,
     AuthenticatedDashboardHivesIndexRoute:
       AuthenticatedDashboardHivesIndexRoute,
   }
