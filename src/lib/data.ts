@@ -12,9 +12,14 @@ export type TraceEvent = Tables<"traceability_events">;
 export type QualityTest = Tables<"quality_tests">;
 export type ChainRecord = Tables<"blockchain_records">;
 
-const unwrap = <T>(res: { data: T | null; error: { message: string } | null }): T => {
+const unwrap = <T>(res: { data: T | null; error: { message: string } | null }): NonNullable<T> => {
   if (res.error) throw new Error(res.error.message);
-  return res.data as T;
+  return res.data as NonNullable<T>;
+};
+
+const unwrapMaybe = <T>(res: { data: T | null; error: { message: string } | null }): T | null => {
+  if (res.error) throw new Error(res.error.message);
+  return res.data;
 };
 
 /* ---------------------------------- reads --------------------------------- */
@@ -35,7 +40,7 @@ export const useHives = () =>
 export const useHive = (hiveId: string) =>
   useQuery({
     queryKey: ["hive", hiveId],
-    queryFn: async () => unwrap(await supabase.from("hives").select("*").eq("id", hiveId).maybeSingle()),
+    queryFn: async () => unwrapMaybe(await supabase.from("hives").select("*").eq("id", hiveId).maybeSingle()),
     enabled: Boolean(hiveId),
   });
 
@@ -90,14 +95,14 @@ export const useBatchByCode = (code: string) =>
   useQuery({
     queryKey: ["batch-code", code],
     queryFn: async () =>
-      unwrap(await supabase.from("honey_batches").select("*").eq("batch_code", code).maybeSingle()),
+      unwrapMaybe(await supabase.from("honey_batches").select("*").eq("batch_code", code).maybeSingle()),
     enabled: Boolean(code),
   });
 
 export const useBatch = (id: string) =>
   useQuery({
     queryKey: ["batch", id],
-    queryFn: async () => unwrap(await supabase.from("honey_batches").select("*").eq("id", id).maybeSingle()),
+    queryFn: async () => unwrapMaybe(await supabase.from("honey_batches").select("*").eq("id", id).maybeSingle()),
     enabled: Boolean(id),
   });
 
