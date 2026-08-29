@@ -130,7 +130,7 @@ function Landing() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button asChild size="lg">
-                  <Link to="/auth" search={{ demo: true }}>
+                  <Link to="/auth">
                     Launch demo <ArrowRight className="size-4" />
                   </Link>
                 </Button>
@@ -326,7 +326,7 @@ function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button asChild size="lg">
-                <Link to="/auth" search={{ demo: true }}>
+                <Link to="/auth">
                   Get started <ArrowRight className="size-4" />
                 </Link>
               </Button>
