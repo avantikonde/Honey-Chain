@@ -23,11 +23,6 @@ function unwrapRow<T>(res: PostgrestSingleResponse<T>): T {
   return res.data;
 }
 
-const unwrapMaybe = <T>(res: { data: T | null; error: { message: string } | null }): T | null => {
-  if (res.error) throw new Error(res.error.message);
-  return res.data;
-};
-
 /* ---------------------------------- reads --------------------------------- */
 
 export const useApiaries = () =>
@@ -46,7 +41,11 @@ export const useHives = () =>
 export const useHive = (hiveId: string) =>
   useQuery({
     queryKey: ["hive", hiveId],
-    queryFn: async () => unwrapMaybe(await supabase.from("hives").select("*").eq("id", hiveId).maybeSingle()),
+    queryFn: async (): Promise<Hive | null> => {
+      const { data, error } = await supabase.from("hives").select("*").eq("id", hiveId).maybeSingle();
+      if (error) throw new Error(error.message);
+      return data;
+    },
     enabled: Boolean(hiveId),
   });
 
@@ -101,14 +100,22 @@ export const useBatchByCode = (code: string) =>
   useQuery({
     queryKey: ["batch-code", code],
     queryFn: async () =>
-      unwrapMaybe(await supabase.from("honey_batches").select("*").eq("batch_code", code).maybeSingle()),
+      (async (): Promise<HoneyBatch | null> => {
+        const { data, error } = await supabase.from("honey_batches").select("*").eq("batch_code", code).maybeSingle();
+        if (error) throw new Error(error.message);
+        return data;
+      })(),
     enabled: Boolean(code),
   });
 
 export const useBatch = (id: string) =>
   useQuery({
     queryKey: ["batch", id],
-    queryFn: async () => unwrapMaybe(await supabase.from("honey_batches").select("*").eq("id", id).maybeSingle()),
+    queryFn: async (): Promise<HoneyBatch | null> => {
+      const { data, error } = await supabase.from("honey_batches").select("*").eq("id", id).maybeSingle();
+      if (error) throw new Error(error.message);
+      return data;
+    },
     enabled: Boolean(id),
   });
 

@@ -20,13 +20,13 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   component: DashboardLayout,
 });
 
-const NAV = [
+const NAV: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/hives", label: "Hives", icon: Grid2x2 },
   { to: "/dashboard/batches", label: "Honey batches", icon: Boxes },
   { to: "/dashboard/supply-chain", label: "Supply chain", icon: Truck },
   { to: "/dashboard/analytics", label: "Analytics", icon: BarChart3 },
-] as const;
+];
 
 function DashboardLayout() {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ function DashboardLayout() {
         return (
           <Link
             key={item.to}
-            to={item.to}
+            to={item.to as never}
             onClick={() => setOpen(false)}
             className={cn(
               "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",

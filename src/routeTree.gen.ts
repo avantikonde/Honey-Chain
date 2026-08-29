@@ -14,6 +14,8 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardHivesIndexRouteImport } from './routes/_authenticated/dashboard.hives.index'
+import { Route as AuthenticatedDashboardHivesHiveIdRouteImport } from './routes/_authenticated/dashboard.hives.$hiveId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,17 +42,33 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardHivesIndexRoute =
+  AuthenticatedDashboardHivesIndexRouteImport.update({
+    id: '/hives/',
+    path: '/hives/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardHivesHiveIdRoute =
+  AuthenticatedDashboardHivesHiveIdRouteImport.update({
+    id: '/hives/$hiveId',
+    path: '/hives/$hiveId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/dashboard/hives/': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/dashboard/hives': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,12 +77,25 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/dashboard/hives/$hiveId': typeof AuthenticatedDashboardHivesHiveIdRoute
+  '/_authenticated/dashboard/hives/': typeof AuthenticatedDashboardHivesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/dashboard/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/dashboard/'
+    | '/dashboard/hives/$hiveId'
+    | '/dashboard/hives/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/dashboard/hives/$hiveId'
+    | '/dashboard/hives'
   id:
     | '__root__'
     | '/'
@@ -72,6 +103,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/dashboard'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/dashboard/hives/$hiveId'
+    | '/_authenticated/dashboard/hives/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -117,16 +150,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/hives/': {
+      id: '/_authenticated/dashboard/hives/'
+      path: '/hives'
+      fullPath: '/dashboard/hives/'
+      preLoaderRoute: typeof AuthenticatedDashboardHivesIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/hives/$hiveId': {
+      id: '/_authenticated/dashboard/hives/$hiveId'
+      path: '/hives/$hiveId'
+      fullPath: '/dashboard/hives/$hiveId'
+      preLoaderRoute: typeof AuthenticatedDashboardHivesHiveIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+  AuthenticatedDashboardHivesHiveIdRoute: typeof AuthenticatedDashboardHivesHiveIdRoute
+  AuthenticatedDashboardHivesIndexRoute: typeof AuthenticatedDashboardHivesIndexRoute
 }
 
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+    AuthenticatedDashboardHivesHiveIdRoute:
+      AuthenticatedDashboardHivesHiveIdRoute,
+    AuthenticatedDashboardHivesIndexRoute:
+      AuthenticatedDashboardHivesIndexRoute,
   }
 
 const AuthenticatedDashboardRouteWithChildren =
